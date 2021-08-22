@@ -1,10 +1,10 @@
 import express from "express";
 import mongoose from "mongoose";
-import message from "./models/message.js";
-import user from "./models/users.js";
 import Pusher from "pusher";
 import Cors from "cors";
-import group from "./models/group.js";
+import message from './router/messagerouter.js'
+import group from "./router/grouprouter.js";
+import user from "./router/userrouter.js";
 const app = express();
 const port = process.env.PORT || 9000;
 const connectionURL =
@@ -46,93 +46,9 @@ db.once("open", () => {
 
 app.use(express.json());
 app.use(Cors());
-app.get("/", (req, res) => {
-  res.status(200).send("hello");
-});
-app.post("/message/new", (req, res) => {
-  const dbMessage = req.body;
-  message.create(dbMessage, (err, data) => {
-    if (err) {
-      res.status(500).send(err);
-    } else {
-      res.status(201).send(data);
-    }
-  });
-});
-app.post("/user/update", (req, res) => {
-  const dbUser = req.body;
-  user.findOneAndUpdate(
-    { user: dbUser.user },
-    { $set: dbUser },
-    { upsert: true },
-    (err, data) => {
-      if (err) {
-        res.status(500).send(err);
-      } else {
-        res.status(201).send(data);
-      }
-    }
-  );
-});
-app.get("/message/get", (req, res) => {
-  const messages = req.body;
-  message.find(
-    {
-      $or: [
-        { $and: [{ sender: messages.user }, { receiver: messages.receiver }] },
-        { $and: [{ sender: messages.receiver }, { receiver: messages.user }] },
-      ],
-    },
-    (err, data) => {
-      if (err) {
-        res.status(500).send(err);
-      } else {
-        res.status(201).send(data);
-      }
-    }
-  );
-});
-app.get("/user/get", (req, res) => {
-  const users = req.body;
-  message.find({"user":users.user},(err,data)=>{
-    if(err){
-      res.status(500).send(err);
-      }
-    else{
-      res.status(201).send(data);
-      }
-  }
-  );
-});
-app.post("/group/new", (req, res) => {
-  const dbgroup = req.body;
-  group.create(dbgroup, (err, data) => {
-    if (err) {
-      res.status(500).send(err);
-    } else {
-      res.status(200).send(data);
-    }
-  });
-});
-app.get("/group/get", (req, res) => {
-  group.find({}, (err, data) => {
-    if (err) {
-      res.status(500).send(err);
-    } else {
-      res.status(200).send(data);
-    }
-  });
-});
-app.post("/group/removemember", (req, res) => {
-  const dbgroup = req.body;
-  group.findOneAndUpdate({ _id: "611e3e7ec466e3595bdf4b5d" },{$pull:{"members":'logesh'}}, (err, data) => {
-    if (err) {
-      res.status(500).send(err);
-    } else {
-      res.status(200).send(data);
-    }
-  });
-});
+app.use('/message',message);
+app.use("/group", group);
+app.use("/user", user);
 app.listen(port, () => {
   console.log(`App listening on port ${port}! `);
 });
