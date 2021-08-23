@@ -6,7 +6,7 @@ const app = express();
 app.use(express.json());
 router.get("/get", (req, res) => {
   const users = req.body;
-message.find({ user: users.user }, (err, data) => {
+user.find({ user: users.user }, (err, data) => {
     if (err) {
       res.status(500).send(err);
     } else {
