@@ -5,7 +5,7 @@ const router = express.Router();
 const app = express();
 app.use(express.json());
 router.get("/get", (req, res) => {
-  const users = req.body;
+  const users = req.query;
 user.find({ user: users.user }, (err, data) => {
     if (err) {
       res.status(500).send(err);
