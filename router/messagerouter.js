@@ -1,7 +1,7 @@
 import express from "express";
 import message from "../models/message.js";
-import Cors from 'cors';
-const router  = express.Router();
+import Cors from "cors";
+const router = express.Router();
 const app = express();
 app.use(express.json());
 app.use(Cors());
@@ -16,7 +16,7 @@ router.post("/new", (req, res) => {
   });
 });
 router.get("/get", (req, res) => {
-  const messages = req.body;
+  const messages = req.query;
   message.find(
     {
       $or: [
