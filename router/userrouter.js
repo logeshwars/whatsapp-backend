@@ -1,16 +1,19 @@
 import express from "express";
-import message from "../models/message.js";
+import Cors from "cors";
 import user from "../models/users.js";
 const router = express.Router();
 const app = express();
+app.use(Cors());
 app.use(express.json());
 router.get("/get", (req, res) => {
-  const users = req.body;
+  const users = req.query;
 user.find({ user: users.user }, (err, data) => {
     if (err) {
       res.status(500).send(err);
     } else {
-      res.status(201).send(data);
+      console.log(users);
+      res.status(201).send({data});
+      
     }
   });
 });

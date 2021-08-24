@@ -1,8 +1,9 @@
 import express from "express";
 import group from "../models/group.js";
+import Cors from 'cors';
 const router = express.Router();
 const app = express();
-var admin;
+app.use(Cors());
 app.use(express.json());
 router.post("/new", (req, res) => {
   const dbgroup = req.body;
