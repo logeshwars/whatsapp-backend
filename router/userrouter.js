@@ -7,13 +7,11 @@ app.use(Cors());
 app.use(express.json());
 router.get("/get", (req, res) => {
   const users = req.query;
-user.find({ user: users.user }, (err, data) => {
+  user.find({ user: users.user }, (err, data) => {
     if (err) {
       res.status(500).send(err);
     } else {
-      console.log(users);
-      res.status(201).send({data});
-      
+      res.status(201).send({ data });
     }
   });
 });
@@ -36,7 +34,7 @@ router.post("/update", (req, res) => {
 router.post("/removecontact", (req, res) => {
   const contact = req.body;
   user.findAndModify(
-    { user: contact.user},
+    { user: contact.user },
     { $pull: { contact: contact.friend } },
     (err, data) => {
       if (err) {
