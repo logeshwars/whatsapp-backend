@@ -2,9 +2,10 @@ import express from "express";
 import mongoose from "mongoose";
 import Pusher from "pusher";
 import Cors from "cors";
-import message from './router/messagerouter.js'
+import message from "./router/messagerouter.js";
 import group from "./router/grouprouter.js";
 import user from "./router/userrouter.js";
+import groupMessage from "./router/groupMessagerouter.js";
 const app = express();
 const port = process.env.PORT || 9000;
 const connectionURL =
@@ -46,9 +47,10 @@ db.once("open", () => {
 
 app.use(express.json());
 app.use(Cors());
-app.use('/message',message);
+app.use("/message", message);
 app.use("/group", group);
 app.use("/user", user);
+app.use("/groupmessage", groupMessage);
 app.listen(port, () => {
   console.log(`App listening on port ${port}! `);
 });
