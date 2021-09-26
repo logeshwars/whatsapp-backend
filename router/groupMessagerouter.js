@@ -19,7 +19,7 @@ router.get("/get", (req, res) => {
   const groupId = req.query.id;
   groupmessage.find({ _id: groupId }, (err, data) => {
     if (err) {
-      res.status(500).send(err);
+      res.status(500).send(data);
     } else {
       res.status(200).send(data);
     }
